@@ -69,9 +69,32 @@ The attitude being taken here is similar to that of Plan9, where
 "everything is a file", except here, "everything is a filepath" and
 "we dont know what that filepath string means".
 
-Step one: open the location. How?
+Step one: open the location. How? We want something like this:
 ```
    (cog-execute! (Open (ItemNode "/whatever")))
 ```
+An example from Sensory gives
+```
+   (OpenLink
+      (TypeNode 'FoobarStream) ; e.g. TextFileStream or IRChatStream
+      (SensoryNode "url://of/some/sort")) ; e.g file:// or irc://
+```
+which identifies the stream type. Makes sense, for the initial open.
+However, if we are already at some given location in a stream, we should
+not have to specify the stream type; it will be "more of the same", and
+thus cached somewhere (where?)
 
+The `DesignNotes-B.md` file says the above should return a list of
+available (sub-)commands:
+```
+   (LinkValue
+      (ActionNode "help")   ; help menu
+      (ActionNode "list")   ; listing of channels
+      (ActionNode "join"))  ; channel to join
+```
+It does not explain how to perform the action.
 
+The `Architecture.md` says that the opened item is a stream that flows
+data. The stream has multiple connectors, and the data that flows
+depends on what's connected to that connector. How to establish the
+connection and get data flowing is not explained.
