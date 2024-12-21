@@ -34,17 +34,18 @@ This is part of a research program that includes the following
 
 Caution
 -------
-What you will read below will seem, at first blush, so painfully obvious
-that it must surely be moronic and deranged. Or perhaps some sophomoric
-high-school project. You can stop reading right now, if you wish.
+Some of what you read below might seem so basic and obvious, that you
+might want to dismiss the entire project as silliness of some sort.
+If so, you can save yourself some time and stop reading right now.
 
-The reality is that this has never been done before (as best as I know)
-and I've got a PhD in theoretical physics and decades of computer
-industry experience. And I've bee doing AI some large chunk of that.
-And I'm not crazy. Trust me: it seems simplistic and obvious because
-I'm trying to understand how certain simplistic and obvious things
-actually work. So that they can be deployed in a generic AGI framework.
-Alas.  Here we go.
+The central object of study is a file system crawler. The concept
+of a crawler has been around since before the web. There are many
+freely available crawlers. If you just want that, go download one and
+use it.  This project is not for you.
+
+If you think there might be some AI magic in the below, you will be
+sorely disappointed. The result will not be a conversational agent
+providing a miraculous oracle to all of your questions.
 
 The Crawler
 -----------
