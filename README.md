@@ -25,6 +25,12 @@ This is part of a research program that includes the following
 * [Agents](https://github.com/opencog/agents), the original motivating
   project that aims to assemble the frameworks provided by the
   sensori-motor, perception-action systems into functional agents.
+* [Learn](https://github.com/opencog/learn), the structure learning
+  system. It's currently a batch-processing system, and converting it
+  to a continuous-stream system resulted in the Agents project, which
+  in turn spun off the Sensory project, which in turn spun off this
+  project. The goal is to integrate all of these, and get back to the
+  task of generic structural learning.
 
 Caution
 -------
@@ -40,8 +46,8 @@ I'm trying to understand how certain simplistic and obvious things
 actually work. So that they can be deployed in a generic AGI framework.
 Alas.  Here we go.
 
-The Task
---------
+The Crawler
+-----------
 The task is to crawl some file system, collect some data about it,
 perform some measurements on that data, including structural similarity,
 use those results to look a second time, and gather and process what
@@ -122,6 +128,38 @@ control system that becomes effectively obsolete, when the agent takes
 over and starts manipulating the control file to it's own ends.
 
 ### Dynamic control
+The above sketches the crawler in enough detail that the first part of
+this project can be cleanly stated. The research task is:
+* Define and develop a generic crawl API, so that generic hierarchies
+  can be explored.
+* Define and develop a control system that can guide the crawler to go
+  to certain places, but not others.
+
+This shouldn't be hard, but its also not easy.
+* The API should be simple enough that human engineers could write shims
+  or callbacks that adapt the crawl to a specific type of hierarchical
+  structure.
+* The control structures need to be in Atomese. Yes, they might start
+  as simple text files, but after ingestion, they become Atomese, so
+  that they become accessible to agents. Designing high-quality Atomese
+  is a challenge.
+
+Perception
+----------
+During the crawl, the agent needs to collect data. Perhaps it is as
+simple as collecting the file aname, path, timestamp, filesize and
+perhaps a hash of the file contents. But perhaps something else: perhaps
+the file contents are to be processed in some way. All this needs to be
+configurable.
+
+TBD: Expand this section with details.
+
+Structural similarity
+---------------------
+The third (and final?) goal is a collection of tools to perform
+structural analysis on the filesystem itself.
+
+TBD: explain that this is the (meta-)goal of teh learn project.
 
 
 Status
