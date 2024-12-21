@@ -19,8 +19,12 @@ here we are.
 
 This is part of a research program that includes the following
 [Opencog](https://github.com/opencog/) projects:
-* [Sensory](https://github.com/opencog/sensory)
-* [Agents](https://github.com/opencog/agents)
+* [Sensory](https://github.com/opencog/sensory), which looks at the
+  abstract structure of perception and action. Perhaps too abstract;
+  this project aims at a simpler, easier and more practical approach.
+* [Agents](https://github.com/opencog/agents), the original motivating
+  project that aims to assemble the frameworks provided by the
+  sensori-motor, perception-action systems into functional agents.
 
 Caution
 -------
@@ -76,6 +80,48 @@ that can walk a collection of hierarchical structures, in the abstract,
 using a low-level API, perhaps similar to the unix commands `cd` and
 `ls`, and perhaps with some `open` and `close` as the walk is being
 performed.
+
+### Motor Control
+The crawler can be thought of as a motor: it moves around from here to
+there. Not in physical 3D space, but in a virtual world of filesystems.
+Like all good motors, it needs a motor-control system. For crawlers,
+this is conventionally a collection of rules about what kinds of data
+to ignore, where not to go, how to bound the search to some limited
+domain.
+
+As a practical example, the `/etc/updatedb.conf` file in Linux systems
+with slocate/plocate installed provides a list file system types that
+shuld not be crawled (the `/tmp` direectory. NFS mounts. The `/proc`
+filesystem) More sophisticated config files can be found in the
+`/etc/systemd` folder. These config files are nice because they are
+human-readable, human-editable and yet encode significant behavioral
+constraints. Yet another example is the pervasive use of JSON and YAML
+files to configure a vast variety of modern software systems.
+
+So the controller needs a configurable control system. Here's the catch:
+as the agent learns about the system it is exploring, it needs to be
+able to modify this configuration. Since the agent is running
+[Atomese](https://opencog.org/wiki/Atomese), the config info needs to be
+in Atomese. This creates problems.
+* Atomese is human-readable, but barely. It's verbose. There's a reason
+  people use JSON and YAML but not s-expressions (or, god forbid, XML).
+* The config is not to be stored in a file, because the config is itself
+  a dynamic object, being acted on, updated and changed (by the agent).
+
+Since we're bootstrapping, it's probably reasonable to start with a text
+file holding the config, and ingest that. Those familiar with large
+systems are aware of several problems. One is that typically, one needs
+to have to manage multiple config files. Well, you can check them into
+`git`, but now, it lives there, outside of where Atomese can touch it.
+
+Many sysadmins like to use a GUI to manage their systems. These days,
+the GUI is typically a web-based control panel. And, for this project,
+it would also be nice to have a web-based control panel of some kind.
+See how design requirements spiral out of control? All this for a
+control system that becomes effectively obsolete, when the agent takes
+over and starts manipulating the control file to it's own ends.
+
+### Dynamic control
 
 
 Status
