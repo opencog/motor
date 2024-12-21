@@ -152,14 +152,28 @@ perhaps a hash of the file contents. But perhaps something else: perhaps
 the file contents are to be processed in some way. All this needs to be
 configurable.
 
-TBD: Expand this section with details.
+The implementation would be to provide a callback for each new
+encountered item, let the user decide what to do with it.
+
+A fancier implementation would provide rule-driven decisions.
+Given that the crawl itself is rule-driven, having the observation
+be also seems reasonable.
 
 Structural similarity
 ---------------------
 The third (and final?) goal is a collection of tools to perform
 structural analysis on the filesystem itself.
 
-TBD: explain that this is the (meta-)goal of teh learn project.
+This last goal drives the project. Without this, crawling a filesystem
+indeed becomes trivial, and this project becomes stupid.
+
+Structural analysis is the "machine learning" part of this. What
+paths are similar? What's different? What's the overall structure?
+There's a richness of questions one can ask here, and a richness of
+tools and algorithms that can provide answers. The task is to manage
+the richness of these algos and the data they produce.
+
+TBD. Explain this.
 
 
 Status
