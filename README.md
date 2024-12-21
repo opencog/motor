@@ -97,7 +97,7 @@ domain.
 
 As a practical example, the `/etc/updatedb.conf` file in Linux systems
 with slocate/plocate installed provides a list file system types that
-shuld not be crawled (the `/tmp` direectory. NFS mounts. The `/proc`
+should not be crawled (the `/tmp` direectory. NFS mounts. The `/proc`
 filesystem) More sophisticated config files can be found in the
 `/etc/systemd` folder. These config files are nice because they are
 human-readable, human-editable and yet encode significant behavioral
