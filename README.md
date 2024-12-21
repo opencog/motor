@@ -179,4 +179,12 @@ TBD. Explain this.
 
 Status
 ------
-* '''Version 0.0.0''' - Basic design is being developed.
+* '''Version 0.0.1''' - Basic design is being developed.
+
+HOWTO
+-----
+Prototype examples are in the [examples](examples) directory.
+Prerequisits are
+[AtomSpace](https://github.com/opencog/atomspace) and
+[Sensory](https://github.com/opencog/sensory).
+Build and install both of these.
