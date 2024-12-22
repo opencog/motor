@@ -36,9 +36,14 @@ execute(
 
 print("Opened a filesystem stream")
 
-pwd = execute(
-	WriteLink(
-		ValueOfLink(
-			AnchorNode("xplor"),
-			PredicateNode("fsys")),
-		ItemNode("pwd")))
+# Create a handle by which we can reference the stream.
+anchor = ValueOfLink(
+	AnchorNode("xplor"),
+	PredicateNode("fsys"))
+
+# Perform some operations on the stream.
+pwd = execute(WriteLink(anchor,  ItemNode("pwd")))
+print("The current directory is", pwd)
+
+dentries = execute(WriteLink(anchor,  ItemNode("ls")))
+print("The directory entries are", dentries)
