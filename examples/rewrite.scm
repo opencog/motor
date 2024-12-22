@@ -67,9 +67,9 @@
 ; Try the above, and see:
 (cog-execute! no-op-rewrite)
 
-; Similar to above, but the rewrite converts the StringValue into
-; an ItemNode, and then wraps the ItemNode with an EdgeLink, so that
-; a later search of the AtomSpace will find the Atoms.
+; Similar to above, but use the rewrite rule to convert the StringValue
+; into an ItemNode, and then wraps the ItemNode with an EdgeLink, so
+; that a later search of the AtomSpace will find the Atoms.
 (define copy-in
 	(Filter
 		(Rule
@@ -80,11 +80,17 @@
 			; The rewrite.
 			(Edge
 				(Predicate "URL")
-				(List
-					(StringOfLink (Type 'ItemNode)
-						(Variable "$string-url")))))
+				(StringOfLink (Type 'ItemNode)
+					(Variable "$string-url"))))
 	 (Write fs-handle (Item "ls"))))
 
 ; Try it.
 (cog-execute! copy-in)
 
+; The directory entries are now searchable as conventional atoms.
+(define query
+	(Meet
+		(TypedVariable (Variable "$someplace") (Type 'ItemNode))
+		(Edge (Predicate "URL") (Variable "$someplace"))))
+
+(cog-execute! query)
