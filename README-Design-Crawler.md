@@ -41,6 +41,12 @@ of the [Sensory project](https://github.com/opencog/sensory). At any
 rate, it is challenging, and presents both conceptual issues, and
 practical problems w.r.t. performance.
 
+Data transformation can be thought of as term rewriting in the narrow
+sense: given some term, we just want to convert it to some different
+form. The Atomose [QueryLink](https://opencog.org/wiki/QueryLink)
+already does this, except that it was not designed to work for streams.
+See further comments below.
+
 Directory Listing
 -----------------
 To obtain a directory listing, one must `cd` to the directory, open it,
@@ -130,3 +136,7 @@ had been observed at some point in time. In this example:
          (VariableNode "$query-result")))
 ```
 will provide a listing of all URL's held in the AtomSpace.
+
+This is nothing more than a stream rewrite, with the only issue being
+that the current `QueryLink` was never designed to operate in this mode.
+Lets see if we can make this work.
