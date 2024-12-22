@@ -162,4 +162,26 @@ The file size and modification date are considered to be part of the
 "metadata" associated with a file. Linux file systems record a variety
 of file metadata, accessible with the `fstat()` system call. Additional
 attributes include file ownership, access permissions, and extensions
-provided by `lsattr` and similar.
+provided by `lsattr` and similar. Any kind of collection of trees will
+typically have metadata associated with each tree, branch or leaf. There
+must be a way of accessing this data.
+
+Metadata may be of two types: stored staticly with the filesystem, and
+generated dynamically, on the fly. Thus, the filesize and modification
+date are stored statically, as a part of the filesystem itself. The file
+mime-type is not: it can only be obtained by running some sort of
+external tool.
+
+The task of the crawler is not only to visit the various trees in the
+tree collection, but to also gather data as it visits. The gathered data
+is then recorded "in memory", i.e. to the AtomSpace. That is, attached
+to the crawler is a "metadata perception system", which makes
+observations on what the crawler finds. This perception system must be
+configurable: the first time through, one might be looking for one
+thing; the second time through, something else. Ths focus of attention
+might even change as the crawl is ongoing.
+
+Perception control and attentional focus is distinct from motor control.
+Motor control determines what trees and branches are visited; perception
+control determines  what is observed when a specific location is
+visited.
