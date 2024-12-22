@@ -137,6 +137,8 @@ had been observed at some point in time. In this example:
 ```
 will provide a listing of all URL's held in the AtomSpace.
 
-This is nothing more than a stream rewrite, with the only issue being
-that the current `QueryLink` was never designed to operate in this mode.
-Lets see if we can make this work.
+This is nothing more than a stream rewrite. The `FilterLink` can process
+streams, with the rewrite defined by a `RuleLink`. This works today.
+The only issue is that there's no way to transfer the string value
+to a node name.  The `NumberOfLink` will convert `FloatValue`s to
+`NumberNode`s, and we need something like that, but for strings.
