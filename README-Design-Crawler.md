@@ -69,32 +69,64 @@ The attitude being taken here is similar to that of Plan9, where
 "everything is a file", except here, "everything is a filepath" and
 "we dont know what that filepath string means".
 
-Step one: open the location. How? We want something like this:
-```
-   (cog-execute! (Open (ItemNode "/whatever")))
-```
-An example from Sensory gives
+### Demo and discussion
+The `Sensory` project `examples/filesys.scm` has a demo of working
+with a file system. That dome is in scheme, its ported to python
+in the current `examples` dir.
+
+Reviewing that example here. The first step is to open the stream,
+like so
 ```
    (OpenLink
-      (TypeNode 'FoobarStream) ; e.g. TextFileStream or IRChatStream
-      (SensoryNode "url://of/some/sort")) ; e.g file:// or irc://
+      (TypeNode 'FileSysStream)
+      (SensoryNode "file:///tmp"))
 ```
-which identifies the stream type. Makes sense, for the initial open.
-However, if we are already at some given location in a stream, we should
-not have to specify the stream type; it will be "more of the same", and
-thus cached somewhere (where?)
+The result is a stream to which assorted commands can be issued. The
+set of available commands is provided by the `LookatLink`, see the
+Sensory docs for more. For now, we assume we just know what the
+possible commands are.
 
-The `DesignNotes-B.md` file says the above should return a list of
-available (sub-)commands:
+A file listing can be obtained by issueing
 ```
-   (LinkValue
-      (ActionNode "help")   ; help menu
-      (ActionNode "list")   ; listing of channels
-      (ActionNode "join"))  ; channel to join
+   (WriteLink stream (ItemNode "ls"))
 ```
-It does not explain how to perform the action.
+where the `(ItemNode "ls")` is one of the available commands that were
+provided by the `LookatLink`.  The return value is a sequence of
+directory entries, encoded as `StringValue`. Go run the demo, it will be
+clear.
 
-The `Architecture.md` says that the opened item is a stream that flows
-data. The stream has multiple connectors, and the data that flows
-depends on what's connected to that connector. How to establish the
-connection and get data flowing is not explained.
+As a stream of `StringValue`, its fairly useless. We'll want to perform
+one of several operations on it:
+* Convert `StringValue`s to `Node`s, so that the AtomSpace can store
+  these.
+* Obtain the file type, the file size, the file mtime and atime, all the
+  stuff that unix `fstat` normally returns.
+* Perform some custom operation on the file contents: e.g. computing a
+  content hash, or, if its a music file, playing it, or a video,
+  watching it.
+
+Each of these operations is explored in turn, below.
+
+### Converting Values to Nodes
+A primary task is to convert Stream data into Atom data. This is the
+very simplest example of a data transformation applet, discussed above.
+For the present example, the stream contains
+```
+   (StringValue "file:///tmp/foo/bar")
+```
+and we wish to convert this to
+```
+   (EdgeLink
+      (PredicateNode "URL")
+      (ItemNode "file:///tmp/foo/bar"))
+```
+The reason we want to do this is so that we can, at a later time,
+perform a query on the AtomSpace and find (for example) all URL's that
+had been observed at some point in time. In this example:
+```
+   (Meet
+      (EdgeLink
+         (PredicateNode "URL")
+         (VariableNode "$query-result")))
+```
+will provide a listing of all URL's held in the AtomSpace.
