@@ -32,3 +32,13 @@
 ; directory listing.
 (cog-execute! (Write fs-handle (Item "ls")))
 
+; Current working directory (current location)
+(cog-execute! (Write fs-handle (Item "pwd")))
+
+; Change directory. Argument should be one of the strings returned
+; by the `ls` command, above.
+(cog-execute! (Write fs-handle (Link (Item "cd") (Item "file:///tmp/.X11-unix"))))
+
+; Indicate if the entry is a regular or special file. Special files
+; include directories, fifos, block and char devices, sockets an so on.
+(cog-execute! (Write fs-handle (Item "special")))
