@@ -42,3 +42,12 @@
 ; Indicate if the entry is a regular or special file. Special files
 ; include directories, fifos, block and char devices, sockets an so on.
 (cog-execute! (Write fs-handle (Item "special")))
+
+; File birth time.
+(cog-execute! (Write fs-handle (Item "btime")))
+
+; File modification time.
+(cog-execute! (Write fs-handle (Item "mtime")))
+
+; File size, in bytes.
+(cog-execute! (Write fs-handle (Item "filesize")))
