@@ -170,7 +170,7 @@ Metadata may be of two types: stored staticly with the filesystem, and
 generated dynamically, on the fly. Thus, the filesize and modification
 date are stored statically, as a part of the filesystem itself. The file
 mime-type is not: it can only be obtained by running some sort of
-external tool.
+external tool. File magic is extracted by looking at the file contents.
 
 The task of the crawler is not only to visit the various trees in the
 tree collection, but to also gather data as it visits. The gathered data
