@@ -3,9 +3,15 @@ Crawler Design Notes
 This README ponders different design ideas for the crawler, and sketches
 out the pros and cons of for various design decisions.
 
+The goal is to explore the concept of crawling a collection of
+hirarchical data, or a "forest of trees". The prototype crawler, and
+much of the discussion below will be aimed at filesystems as an example
+of a collecton of trees. The general design is meant to be general,
+so that it can work for any kind of tree-like data.
+
 Crawl Representation
 --------------------
-Before looking at the crawler deign itself, its worth taking a quick
+Before looking at the crawler design itself, its worth taking a quick
 glance at the artifacts that will be produced. This will be a
 representation of the file system in Atomese, along with properties
 associated with those files.
@@ -41,11 +47,20 @@ of the [Sensory project](https://github.com/opencog/sensory). At any
 rate, it is challenging, and presents both conceptual issues, and
 practical problems w.r.t. performance.
 
-Data transformation can be thought of as term rewriting in the narrow
-sense: given some term, we just want to convert it to some different
-form. The Atomose [QueryLink](https://opencog.org/wiki/QueryLink)
-already does this, except that it was not designed to work for streams.
-See further comments below.
+Data transformation has both a "narrow" and a "broad" interpretation.
+In the narrow sense, this is nothing more than term rewriting and data
+stream filtering. The Atomese
+[FilterLink](https://opencog.org/wiki/FilterLink) provides a mechanism
+for rewriting data streams, by applying
+[RuleLink](https://opencog.org/wiki/RuleLink)s to them. These are
+dataflow analogs to the Atomose
+[QueryLink](https://opencog.org/wiki/QueryLink), which loosely
+corresponds to the SQL concept of a query. Queries are for finding and
+rewriting "static" data that sits in the AtomSpace. The Filters are
+for modifying dynamically-flowing data.
+
+Broad rewrites are provided by neural nets, which scale to much higher
+dimensions than are available either with FilterLink or QueryLink.
 
 Directory Listing
 -----------------
@@ -141,3 +156,10 @@ This is nothing more than a stream rewrite. The `FilterLink` can process
 streams, with the rewrite defined by a `RuleLink`. This is demoed in the
 examples directory, in the [examples/rewrite.scm](examples/rewrite.scm)
 demo.
+
+### Getting Metadata
+The file size and modification date are considered to be part of the
+"metadata" associated with a file. Linux file systems record a variety
+of file metadata, accessible with the `fstat()` system call. Additional
+attributes include file ownership, access permissions, and extensions
+provided by `lsattr` and similar.
