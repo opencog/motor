@@ -64,18 +64,27 @@
 	; will be applied. As before, this is just a directory listing.
 	(Write fs-handle (Item "ls"))))
 
+; Try the above, and see:
+(cog-execute! no-op-rewrite)
+
+; Similar to above, but the rewrite converts the StringValue into
+; an ItemNode, and then wraps the ItemNode with an EdgeLink, so that
+; a later search of the AtomSpace will find the Atoms.
 (define copy-in
 	(Filter
 		(Rule
 			(Variable "$string-url")
 			(LinkSignature (Type 'StringValue)
 				(Variable "$string-url"))
+
+			; The rewrite.
 			(Edge
 				(Predicate "URL")
 				(List
-					(StringOfLink (Type 'ItemtNode)
+					(StringOfLink (Type 'ItemNode)
 						(Variable "$string-url")))))
 	 (Write fs-handle (Item "ls"))))
 
-
+; Try it.
+(cog-execute! copy-in)
 
