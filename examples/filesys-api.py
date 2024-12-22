@@ -36,3 +36,9 @@ execute(
 
 print("Opened a filesystem stream")
 
+pwd = execute(
+	WriteLink(
+		ValueOfLink(
+			AnchorNode("xplor"),
+			PredicateNode("fsys")),
+		ItemNode("pwd")))
