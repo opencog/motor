@@ -1,6 +1,9 @@
 ;
 ; crawler.scm -- crawler demo
 ;
+; Pre-requisites: study the AtomSpace example
+; `examples/pattern-matcher/filter-value.scm`
+;
 (use-modules (srfi srfi-1))
 (use-modules (opencog) (opencog exec) (opencog sensory))
 
@@ -16,15 +19,17 @@
 	(Filter
 		(Rule
 			(Variable "$string-url")
-			(LinkSignature (Type 'StringValue)
-				(Variable "$string-url"))
+			(LinkSignature (Type 'LinkValue)
+				(Variable "$string-url")
+				(LinkSignature (Type 'StringValue)
+					(Node "reg")))
 
 			; The rewrite.
 			(Edge
-				(Predicate "URL")
+				(Predicate "fURL")
 				(StringOfLink (Type 'ItemNode)
 					(Variable "$string-url"))))
-	 (Write fs-handle (Item "ls"))))
+	 (Write fs-handle (Item "special"))))
 
 ; Try it.
 (cog-execute! copy-in)
