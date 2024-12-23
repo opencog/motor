@@ -1,5 +1,5 @@
 ;
-; rewrite.scm -- Stream rewriting demo
+; rewrite.scm -- Example of stream rewriting
 ;
 ; The FileSysStream sensory node generates a stream of StringValues
 ; that correspond to files in a file system. This stream can be
@@ -7,13 +7,12 @@
 ; most basic tasks is to capture that stream into Atoms, so that it can
 ; be recorded in the AtomSpace.
 ;
-; This demo shows how to convert a directory listing, originally
+; This example shows how to convert a directory listing, originally
 ; appearing as a stream, to a set of tagged ItemNodes. As such, the
 ; resulting contents of the AtomSpce can be thought of as a "model" of
 ; the "outside world" (the file system), and that model can be examined
 ; ("pondered") without requiring a second look at the external world.
 ;
-(use-modules (ice-9 threads))
 (use-modules (srfi srfi-1))
 (use-modules (opencog) (opencog exec) (opencog sensory))
 

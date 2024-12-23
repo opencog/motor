@@ -10,7 +10,6 @@
 ;
 ; The `filesys-api.py` file shows roughly the same demo, but in python.
 ;
-(use-modules (ice-9 threads))
 (use-modules (srfi srfi-1))
 (use-modules (opencog) (opencog exec) (opencog sensory))
 
