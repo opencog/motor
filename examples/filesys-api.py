@@ -60,3 +60,9 @@ print("\n\n==========================================\n\n")
 dentries = execute(WriteLink(anchor,  ItemNode("mtime")))
 print("The modification times of directory entries are", dentries)
 print("\n\n==========================================\n\n")
+
+# The python shutdown does not proceed smoothly, unless we force
+# the AtomSpace dtor to run first. This avoid an ugly but harmless
+# error message.
+pop_default_atomspace()
+space = ()
