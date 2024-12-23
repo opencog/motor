@@ -6,8 +6,11 @@
 # concepts expressed in scheme also work in python. This is needed,
 # because many programmers are more comfortable with python.
 #
-# This file is a port of the first part of the `filesys.scm` demo from
-# the `Sensory` project examples.
+# This file is a python version of the scheme variant `filesys-api.scm`
+# also in this directory. Both show the same things, more or less.
+#
+# Both of these are derived from the `filesys.scm` demo from the
+# `Sensory` project examples.
 
 from opencog.atomspace import AtomSpace
 from opencog.type_constructors import *

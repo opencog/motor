@@ -1,5 +1,5 @@
 ;
-; metadata.scm -- File metadata demo
+; filesys-api.scm -- File metadata demo
 ;
 ; The FileSysStream sensory node generates a stream of StringValues
 ; that correspond to files in a file system. It can generate listings
@@ -8,6 +8,7 @@
 ; in that it does not deal with wiring issues; it just illustrates
 ; the "connectors" or "legs" on the component.
 ;
+; The `filesys-api.py` file shows roughly the same demo, but in python.
 ;
 (use-modules (ice-9 threads))
 (use-modules (srfi srfi-1))

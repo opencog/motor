@@ -12,6 +12,8 @@ into a guile or python3 REPL shell, played with and modified as desired.
   using the Atomese python bindings. This is a port of the first portion
   of the `filesys.scm` example in the Sensory project.
 
+* `filesys-api.scm` -- Same as above, but in scheme.
+
 * `rewrite.scm` -- Take a stream of inflowing strings, and rewrite them
   into Nodes. This is much like the conventional AtomSpace flow
   filtering and rewriting demos, here adapted to the FileSysStream
