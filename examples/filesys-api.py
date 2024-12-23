@@ -47,6 +47,16 @@ anchor = ValueOfLink(
 # Perform some operations on the stream.
 pwd = execute(WriteLink(anchor,  ItemNode("pwd")))
 print("The current directory is", pwd)
+print("\n\n==========================================\n\n")
 
 dentries = execute(WriteLink(anchor,  ItemNode("ls")))
 print("The directory entries are", dentries)
+print("\n\n==========================================\n\n")
+
+dentries = execute(WriteLink(anchor,  ItemNode("filesize")))
+print("The sizes of directory entries are", dentries)
+print("\n\n==========================================\n\n")
+
+dentries = execute(WriteLink(anchor,  ItemNode("mtime")))
+print("The modification times of directory entries are", dentries)
+print("\n\n==========================================\n\n")
