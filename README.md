@@ -179,11 +179,21 @@ TBD. Explain this.
 
 Status
 ------
-* '''Version 0.0.1''' - Basic design is being developed.
+* '''Version 0.0.2''' - Basic design is being developed.
 
 HOWTO
 -----
-Prototype examples are in the [examples](examples) directory.
+Code is organized into two directories:
+* Short [examples](examples) illustrating snippets of ideas. The
+  examples all work, int that they're runnable, and they do what they
+  claim to do. They are of a tutorial nature: You're supposed to copy
+  the code into a scheme or python3 session, run it, see what it does,
+  and ponder what it means.  The examples are all short, simple,
+  bite-sixzed.
+* Longer [demos](demos) which combine aspects of the examples into
+  longer quasi-functional assemblies that do portions of what this
+  README above discusses.
+
 Prerequisits are
 [AtomSpace](https://github.com/opencog/atomspace) and
 [Sensory](https://github.com/opencog/sensory).
