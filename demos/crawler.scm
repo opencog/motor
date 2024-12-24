@@ -80,6 +80,29 @@
 (cog-execute! get-regular-files)
 
 ;------------------------------------------------------------------
+; Like above, but this time, look only for directories.
+(define dir-only-filter-rule
+	(Rule
+		(Variable "$string-url")
+
+		; Accept only directories
+		(LinkSignature (Type 'LinkValue)
+			(Variable "$string-url")
+			(StringOf (Type 'StringValue) (Node "dir")))
+
+		; Output the directory
+		(Variable "$string-url")))
+
+; Wire in the rule defined above to the crawler source.
+(define dir-filter
+	(Filter
+		dir-only-filter-rule
+		(Write fstream-observer (Item "special"))))
+
+; Try it
+(cog-execute! dir-filter)
+
+;------------------------------------------------------------------
 
 ; The directory entries are now searchable as conventional atoms.
 (define query
