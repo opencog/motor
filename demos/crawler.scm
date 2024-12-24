@@ -8,29 +8,28 @@
 (use-modules (srfi srfi-1))
 (use-modules (opencog) (opencog exec) (opencog sensory))
 
+; The crawler attentional focus is a location (in the file system)
+; to which the cralwer will be paying attention to.
+(define crawler-focus
+	(SetValue
+		(Anchor "crawler") (Predicate "focus")
+		(Sensory "file:///tmp")))
+
+; Executing it "makes it so": it places the focus-point at a
+; "well-known place" where everyone can find it.
+(cog-execute! crawler-focus)
+
+; The focus location. Executing this will reveal what the focus is.
+(define focus-loc (ValueOf (Anchor "crawler") (Predicate "focus")))
+
+; Try it.
+(cog-execute! focus-loc)
+
 ; A file-system observer. Executing this will open the stream.
 (define fstream-observer
-	(Open (Type 'FileSysStream) (Sensory "file:///tmp")))
+	(Open (Type 'FileSysStream) focus-loc))
 
-; Location where we will put the bottom-level observer.
-; Optional, we don't really need this, but perhaps its
-; convenient for ... ??? something ???
-(define fstream-loc (ValueOf (Anchor "crawler") (Predicate "filestream")))
-
-; Associate the observer with the above location.
-; Optional, we don't really need this, but perhaps its
-; convenient for ... ??? something ???
-; Executing this will cause the stream to be opened,
-; and placed at the given location.
-(define fstream-trigger
-	(SetValue
-		(Anchor "crawler") (Predicate "filestream")
-		fstream-observer))
-
-; Open the stream, and actuall place it at the location.
-; Optional We don't need to do this yet (or at all).
-(cog-execute! fstream-trigger)
-
+;------------------------------------------------------------------
 ; The (Item "special") on the FileSys stream marks the files in the
 ; stream with the file-type. This is "reg" for regular files, "dir"
 ; for directories, and yet other types for fifos, sockets, char and
