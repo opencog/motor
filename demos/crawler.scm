@@ -8,6 +8,7 @@
 (use-modules (srfi srfi-1))
 (use-modules (opencog) (opencog exec) (opencog sensory))
 
+;------------------------------------------------------------------
 ; The crawler attentional focus is a location (in the file system)
 ; to which the cralwer will be paying attention to.
 (define crawler-focus
@@ -66,14 +67,19 @@
 ; defined above. We don't need to run this yet, but why not?
 (cog-execute! get-regular-files)
 
+;------------------------------------------------------------------
+; The above pipleline is independent of the focus location.
+; Lets change focus, and verify.
+
 (cog-execute!
-   (SetValue
-      (Anchor "crawler") (Predicate "reg-files")
-		get-regular-files))
+	(SetValue
+		(Anchor "crawler") (Predicate "focus")
+		(Sensory "file:///etc")))
 
 ; Try it.
 (cog-execute! get-regular-files)
 
+;------------------------------------------------------------------
 
 ; The directory entries are now searchable as conventional atoms.
 (define query
