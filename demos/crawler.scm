@@ -56,7 +56,7 @@
 			(StringOfLink (Type 'ItemNode)
 				(Variable "$string-url")))))
 
-; Wire in the rule defined above to the crawler source.
+; Wire in the rule defined above to the stream source.
 (define get-regular-files
 	(Filter
 		record-regular-file-url
@@ -90,8 +90,9 @@
 			(Variable "$string-url")
 			(StringOf (Type 'StringValue) (Node "dir")))
 
-		; Output the directory
-		(Variable "$string-url")))
+		; Rewrite the directory into a SensoryNode
+		(StringOfLink (Type 'SensoryNode)
+			(Variable "$string-url"))))
 
 ; Wire in the rule defined above to the crawler source.
 (define dir-filter
@@ -103,8 +104,20 @@
 (cog-execute! dir-filter)
 
 ;------------------------------------------------------------------
+; Two deep
 
-; The directory entries are now searchable as conventional atoms.
+(define dir-observer
+	(Open (Type 'FileSysStream) dir-filter))
+
+(define dir-filter2
+	(Filter
+		dir-only-filter-rule
+		(Write dir-observer (Item "special"))))
+
+
+;------------------------------------------------------------------
+
+; The files are now searchable as conventional atoms.
 (define query
 	(Meet
 		(TypedVariable (Variable "$someplace") (Type 'ItemNode))
