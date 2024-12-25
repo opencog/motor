@@ -90,9 +90,9 @@
 			(Variable "$string-url")
 			(StringOf (Type 'StringValue) (Node "dir")))
 
-		; Rewrite the directory into a SensoryNode
-		(StringOfLink (Type 'SensoryNode)
-			(Variable "$string-url"))))
+		; Pass through the raw StringValues
+		; (don't do any rewrites)
+		(Variable "$string-url")))
 
 ; Wire in the rule defined above to the crawler source.
 (define dir-filter
@@ -104,15 +104,25 @@
 (cog-execute! dir-filter)
 
 ;------------------------------------------------------------------
-; Two deep
+; Explore two elvels deep
 
-(define dir-observer
-	(Open (Type 'FileSysStream) dir-filter))
+; Accept any list of StringValue; assume that they hold the names of
+; directory entries. Apply a rewrite that opens a corresponding file
+; stream.
+(define open-rule
+	(Rule
+		(VariableNode "$dirent")
+		(VariableNode "$dirent")
+
+		; Rewrite the directory into a SensoryNode,
+		; then open it. Returns a list of FileStreams,
+		; one for each directory.
+		(Open (Type 'FileSysStream)
+			(StringOfLink (Type 'SensoryNode)
+				(Variable "$dirent")))))
 
 (define dir-filter2
-	(Filter
-		dir-only-filter-rule
-		(Write dir-observer (Item "special"))))
+	(Filter open-rule dir-filter))
 
 
 ;------------------------------------------------------------------
