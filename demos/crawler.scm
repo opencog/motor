@@ -104,7 +104,7 @@
 (cog-execute! dir-filter)
 
 ;------------------------------------------------------------------
-; Explore two elvels deep
+; Explore two levels deep
 
 ; Accept any list of StringValue; assume that they hold the names of
 ; directory entries. Apply a rewrite that opens a corresponding file
@@ -115,14 +115,42 @@
 		(VariableNode "$dirent")
 
 		; Rewrite the directory into a SensoryNode,
-		; then open it. Returns a list of FileStreams,
-		; one for each directory.
-		(Open (Type 'FileSysStream)
-			(StringOfLink (Type 'SensoryNode)
-				(Variable "$dirent")))))
+		; then open it. Then get the directories in it.
+		(Write
+			(Open (Type 'FileSysStream)
+				(StringOfLink (Type 'SensoryNode)
+					(Variable "$dirent")))
+			(Item "special"))))
 
 (define dir-filter2
 	(Filter open-rule dir-filter))
+
+;------------------------------------------------------------------
+; Get all directories in a directory.
+; The above two stanzas split out directory processing into
+; several steps, chaining together several filters. These can also be
+; combined into one creating a more compact rewrite.
+
+(define explore-dirs
+	(Rule
+		(Variable "$string-url")
+
+		; Accept only directories
+		(LinkSignature (Type 'LinkValue)
+			(Variable "$string-url")
+			(StringOf (Type 'StringValue) (Node "dir")))
+
+		; Rewrite the directory into a SensoryNode,
+		; then open it. The get the special-file tags on it.
+		(Write
+			(Open (Type 'FileSysStream)
+				(StringOfLink (Type 'SensoryNode)
+					(Variable "$string-url")))
+			(Item "special"))))
+
+(define dir-filter3
+	(Filter explore-dirs
+		(Write fstream-observer (Item "special"))))
 
 
 ;------------------------------------------------------------------
