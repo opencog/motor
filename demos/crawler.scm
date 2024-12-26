@@ -152,6 +152,26 @@
 	(Filter explore-dirs
 		(Write fstream-observer (Item "special"))))
 
+;------------------------------------------------------------------
+; loop-de-loop.
+
+(define crawler-looper
+	(SetValue
+		(Anchor "crawler") (Predicate "looper")
+		(Write (Open (Type 'FileSysStream) focus-loc) (Item "special"))))
+
+(cog-execute! crawler-looper)
+
+; The looper location. Executing this will reveal what the focus is.
+(define looper-loc (ValueOf (Anchor "crawler") (Predicate "looper")))
+
+(define looper
+	(SetValue
+		(Anchor "crawler") (Predicate "looper")
+		(Filter explore-dirs looper-loc)))
+
+(cog-execute! looper)
+
 
 ;------------------------------------------------------------------
 
