@@ -186,7 +186,10 @@
 		(Filter
 			(Rule
 				(Variable "$dentry")
-				(LinkSignature (Type 'LinkValue) (Variable "$dentry"))
+				(LinkSignature
+					(Type 'LinkValue)
+					(Variable "$dentry")
+					(Sign 'StringValue))
 				(Variable "$dentry"))
 			(Glob "$dlist"))))
 
