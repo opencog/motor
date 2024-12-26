@@ -176,14 +176,20 @@
 
 (define unwrap-subdirs
 	(Rule
-		(TypedVariable (Variable "$dentry") (Type 'LinkValue))
+		; (TypedVariable (Glob "$dentry") (Type 'LinkValue))
+		(Glob "$dentry")
 
 		; Accept only subdirectories.
-		(LinkSignature (Type 'LinkValue)
-			(Variable "$dentry"))
+		; (Glob "$dentry")
+		(LinkSignature (Type 'LinkValue) (Glob "$dentry"))
 
-		; unwrap it
-		(Variable "$dentry")))
+		; Unwrap it.
+		(Glob "$dentry")))
+
+(define unwrap-filter
+	(Filter unwrap-subdirs dir-filter3))
+
+(cog-execute! unwrap-filter)
 
 ;------------------------------------------------------------------
 ; loop-de-loop.
