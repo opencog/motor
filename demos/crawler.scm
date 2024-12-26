@@ -152,6 +152,39 @@
 	(Filter explore-dirs
 		(Write fstream-observer (Item "special"))))
 
+; Up to this point, the demo has been relatively straight-forward. At
+; this point, though, the confusion begins. In the above, how does one
+; know that the `explore-dirs` rule is getting arguments of the correct
+; kind? This takes a bit of mental effort and double-checking. Playing
+; with the guile REPL, run `(cog-execute! (Write fstream-observer ...))`
+; and verify that what is printed can be pattern-matched by the input
+; (acceptance) pattern to `explore-dirs`. But this takes some focus and
+; concentration.
+;
+; This is a problem. Atomese was never meant to be a human-friendly
+; programming environment; it was meant to be algorithm-friendly.
+; But debuggability is an issue. This is why Sensory has a focus on
+; connections and connection types: the connection types help verify
+; valid connections. But even then, this shifts the issue to a
+; different location. The difficulty of understanding what the above
+; does is a real problem, even though what it does is nearly trivial
+; in any conventional programing language: its just a directory listing,
+; two levels down. Dealing with this is an open, unsolved problem.
+;
+;------------------------------------------------------------------
+; unwrapper
+
+(define unwrap-subdirs
+	(Rule
+		(TypedVariable (Variable "$dentry") (Type 'LinkValue))
+
+		; Accept only subdirectories.
+		(LinkSignature (Type 'LinkValue)
+			(Variable "$dentry"))
+
+		; unwrap it
+		(Variable "$dentry")))
+
 ;------------------------------------------------------------------
 ; loop-de-loop.
 
