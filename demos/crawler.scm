@@ -172,41 +172,16 @@
 ; two levels down. Dealing with this is an open, unsolved problem.
 ;
 ;------------------------------------------------------------------
-; unwrapper
-
-(define unwrap-subdirs
-	(Rule
-		; (TypedVariable (Glob "$dlist") (Type 'LinkValue))
-		(Glob "$dlist")
-
-		; Accept only subdirectories.
-		(LinkSignature (Type 'LinkValue) (Glob "$dlist"))
-
-		; Unwrap it.
-		(Filter
-			(Rule
-				(Variable "$dentry")
-				(LinkSignature
-					(Type 'LinkValue)
-					(Variable "$dentry")
-					(Sign 'StringValue))
-				(Variable "$dentry"))
-			(Glob "$dlist"))))
-
-(define unwrap-filter
-	(Filter unwrap-subdirs dir-filter3))
-
-(cog-execute! unwrap-filter)
-
-;------------------------------------------------------------------
 ; loop-de-loop.
 
-(define crawler-looper
-	(SetValue
-		(Anchor "crawler") (Predicate "looper")
-		(Write (Open (Type 'FileSysStream) focus-loc) (Item "special"))))
+; Set initial location to be crawled
+(define sense-root (Sensory "file:///tmp"))
 
-(cog-execute! crawler-looper)
+(cog-execute!
+	(SetValue (Anchor "crawler") (Predicate "looper") sense-root))
+
+		; (Write (Open (Type 'FileSysStream) sense-root) (Item "special"))))
+
 
 ; The looper location. Executing this will reveal what the focus is.
 (define looper-loc (ValueOf (Anchor "crawler") (Predicate "looper")))
@@ -214,7 +189,8 @@
 (define looper
 	(SetValue
 		(Anchor "crawler") (Predicate "looper")
-		(Filter explore-dirs looper-loc)))
+		(Concatenate
+			(Filter explore-dirs looper-loc))))
 
 (cog-execute! looper)
 
