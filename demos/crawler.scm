@@ -301,6 +301,36 @@
 		(DefinedPredicate "Reporting loop")
 	))
 
+; Run it.
+(cog-evaluate! (DefinedPredicate "Reporting loop"))
+
+;------------------------------------------------------------------
+; The below demonstrates interactive I/O with the xterm. In this case,
+; the loop iteration pauses at each step, waiting for keyboard input.
+; The xterm TerminalStream is designed to hang until there is input;
+; this is used to pause the recursion.
+
+; The pause is performed by comparing terminal input to a given string.
+; This is perhaps a bit uglier and more complicated than it could be:
+; Executing term-loc returns (TerminalStream (Item "whatever was typed\n"))
+; and not just the item. The CollectionOf replaces the TerminalStream
+;
+(cog-evaluate!
+	(Equal (CollectionOf term-loc) (Set (Item "xxx\n"))))
+
+; Define a interactive loop.
+(Define
+	(DefinedPredicate "Interactive loop")
+	(SequentialAnd
+		(True (Filter report-dirs looper-loc))
+		(True (Write term-loc (Node "------------------------\n")))
+		(True (Write term-loc (Node "Hit enter to continue, anything else to halt\n")))
+		(Equal (CollectionOf term-loc) (Set (Item "\n")))
+		(True looper)
+		(DefinedPredicate "Interactive loop")
+	))
+
+
 ;------------------------------------------------------------------
 ;------------------------------------------------------------------
 
