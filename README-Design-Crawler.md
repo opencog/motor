@@ -6,7 +6,7 @@ out the pros and cons of for various design decisions.
 The goal is to explore the concept of crawling a collection of
 hirarchical data, or a "forest of trees". The prototype crawler, and
 much of the discussion below will be aimed at filesystems as an example
-of a collecton of trees. The general design is meant to be general,
+of a collection of trees. The general design is meant to be general,
 so that it can work for any kind of tree-like data.
 
 Crawl Representation
@@ -23,7 +23,7 @@ to hierarchical tree structures. However, flattened representations seem
 to work better for high-performance algorithmic processing. A flattened
 representation corresponds roughly to the idea of an
 "[inode](https://en.wikipedia.org/wiki/inode)" in a unix file system.
-The inode number itself need not be an integer. The desirable proerties
+The inode number itself need not be an integer. The desirable properties
 of an inode number are provided by a URL: It uniquely represents the
 indicated object, and it can be computed without access to a central
 URL-dispensing authority (its "decentralized").
@@ -107,7 +107,7 @@ set of available commands is provided by the `LookatLink`, see the
 Sensory docs for more. For now, we assume we just know what the
 possible commands are.
 
-A file listing can be obtained by issueing
+A file listing can be obtained by issuing
 ```
    (WriteLink stream (ItemNode "ls"))
 ```
@@ -166,7 +166,7 @@ provided by `lsattr` and similar. Any kind of collection of trees will
 typically have metadata associated with each tree, branch or leaf. There
 must be a way of accessing this data.
 
-Metadata may be of two types: stored staticly with the filesystem, and
+Metadata may be of two types: stored statically with the filesystem, and
 generated dynamically, on the fly. Thus, the filesize and modification
 date are stored statically, as a part of the filesystem itself. The file
 mime-type is not: it can only be obtained by running some sort of
@@ -178,7 +178,7 @@ is then recorded "in memory", i.e. to the AtomSpace. That is, attached
 to the crawler is a "metadata perception system", which makes
 observations on what the crawler finds. This perception system must be
 configurable: the first time through, one might be looking for one
-thing; the second time through, something else. Ths focus of attention
+thing; the second time through, something else. The focus of attention
 might even change as the crawl is ongoing.
 
 Perception control and attentional focus is distinct from motor control.

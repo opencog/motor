@@ -1,6 +1,6 @@
 Examples
 --------
-A colection of examples are given below. These all "work", and
+A collection of examples are given below. These all "work", and
 demonstrate various ideas that the README's talk about. They veer
 towards the experimental: although they illustrate key ideas and
 concepts, they are subject to change. This is not the final design.

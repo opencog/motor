@@ -68,7 +68,7 @@
 (cog-execute! get-regular-files)
 
 ;------------------------------------------------------------------
-; The above pipleline is independent of the focus location.
+; The above pipeline is independent of the focus location.
 ; Lets change focus, and verify.
 
 (cog-execute!
@@ -168,7 +168,7 @@
 ; valid connections. But even then, this shifts the issue to a
 ; different location. The difficulty of understanding what the above
 ; does is a real problem, even though what it does is nearly trivial
-; in any conventional programing language: its just a directory listing,
+; in any conventional programming language: its just a directory listing,
 ; two levels down. Dealing with this is an open, unsolved problem.
 ;
 ;------------------------------------------------------------------

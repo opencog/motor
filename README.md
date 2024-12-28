@@ -195,7 +195,7 @@ Code is organized into two directories:
   longer quasi-functional assemblies that do portions of what this
   README above discusses.
 
-Prerequisits are
+Prerequisites are
 [AtomSpace](https://github.com/opencog/atomspace) and
 [Sensory](https://github.com/opencog/sensory).
 Build and install both of these.

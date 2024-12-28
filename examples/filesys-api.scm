@@ -22,7 +22,7 @@
       (Open (Type 'FileSysStream) (Sensory "file:///tmp"))))
 
 ; The stream is anchored to a "well known location". Create a handle
-; for that location, so we can minimze typing for this demo. (Real apps
+; for that location, so we can minimize typing for this demo. (Real apps
 ; would just access the appropriate location directly.)
 (define fs-handle (ValueOf (Anchor "xplor") (Predicate "fsys")))
 
