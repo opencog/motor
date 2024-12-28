@@ -177,11 +177,15 @@
 ; Set initial location to be crawled
 (define sense-root (Sensory "file:///tmp"))
 
+; Set starting location. The crawler expects a directory name, tagged
+; with a file-type. The easiest way to get this is to just ask for it.
+; The alternative is to hand-jigger an appropriate form, which is OK,
+; but defeats the idea of only using the sensory API only.
 (cog-execute!
-	(SetValue (Anchor "crawler") (Predicate "looper") sense-root))
-
-		; (Write (Open (Type 'FileSysStream) sense-root) (Item "special"))))
-
+	(SetValue (Anchor "crawler") (Predicate "looper")
+		(Write
+			(Open (Type 'FileSysStream) sense-root)
+			(List (Item "special") sense-root))))
 
 ; The looper location. Executing this will reveal what the focus is.
 (define looper-loc (ValueOf (Anchor "crawler") (Predicate "looper")))
