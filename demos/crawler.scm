@@ -173,31 +173,55 @@
 ;
 ;------------------------------------------------------------------
 ; loop-de-loop.
+; The `explore-dirs` rule above was written to accept a directory
+; listing as input, and then enter each subdir, and create a directory
+; listing for that. Since it outputs the same format of data as it
+; accepts as input, it is ready-made to be used in a recursive fashion.
+; This part of the demo shows this.
+;
+; To wire the output of the rule back to the input, the most direct
+; solution is to place initial data at a fixed memory location, and then
+; run the rule, uptating the location with each iteration. The
+; "location" here is just some Atom and some Key indicating a Value
+; stored there. The first part of the demo is simply to seed an
+; initial value at that location.
 
-; Set initial location to be crawled
+; Designate the directory to be crawled
 (define sense-root (Sensory "file:///tmp"))
 
 ; Set starting location. The crawler expects a directory name, tagged
 ; with a file-type. The easiest way to get this is to just ask for it.
 ; The alternative is to hand-jigger an appropriate form, which is OK,
-; but defeats the idea of only using the sensory API only.
-(cog-execute!
+; but defeats the idea of only using pure Atomese and the sensory API.
+(define (set-initial-root fsys-root)
 	(SetValue (Anchor "crawler") (Predicate "looper")
 		(Write
-			(Open (Type 'FileSysStream) sense-root)
-			(List (Item "special") sense-root))))
+			(Open (Type 'FileSysStream) fsys-root)
+			(List (Item "special") fsys-root))))
+
+; Actually set it.
+(cog-execute! (set-initial-root (Sensory "file:///tmp")))
 
 ; The looper location. Executing this will reveal what the focus is.
 (define looper-loc (ValueOf (Anchor "crawler") (Predicate "looper")))
 
+; Wrap the `explore-dirs` such that it reads a listing at `looper-loc`,
+; descends into the subdirs, and then updates the list at `looper-loc`.
 (define looper
 	(SetValue
 		(Anchor "crawler") (Predicate "looper")
 		(Concatenate
 			(Filter explore-dirs looper-loc))))
 
+; Run the step once, and only once.
 (cog-execute! looper)
 
+; Run it again. Repeat till satsified that directories are being
+; explored.
+(cog-execute! looper)
+
+; Reset the root, as desired.
+(cog-execute! (set-initial-root (Sensory "file:///tmp")))
 
 ;------------------------------------------------------------------
 
