@@ -278,7 +278,7 @@
 	(Open (Type 'TerminalStream))))
 
 ; Define a rule that outputs files to the xterm stream.
-(define report-dirs
+(define report-files
 	(Rule
 		(Variable "$string-url")
 
@@ -297,7 +297,7 @@
 (Define
 	(DefinedPredicate "Reporting loop")
 	(SequentialAnd
-		(True (Filter report-dirs looper-loc))
+		(True (Filter report-files looper-loc))
 		(True (Write term-loc (Node "------------------------\n")))
 		(DefinedPredicate "keep going?")
 		(True looper)
@@ -328,7 +328,7 @@
 (Define
 	(DefinedPredicate "Interactive loop")
 	(SequentialAnd
-		(True (Filter report-dirs looper-loc))
+		(True (Filter report-files looper-loc))
 		(True (Write term-loc (Node "------------------------\n")))
 		(True (Write term-loc (Node "Hit enter to continue, anything else to halt\n")))
 		(Equal term-loc (LinkSignature (Type 'LinkValue) (Item "\n")))
