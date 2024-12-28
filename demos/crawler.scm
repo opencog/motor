@@ -148,9 +148,12 @@
 					(Variable "$string-url")))
 			(Item "special"))))
 
-(define dir-filter3
+(define dir-filter-all-in-one
 	(Filter explore-dirs
 		(Write fstream-observer (Item "special"))))
+
+; Try it.
+(cog-execute! dir-filter-all-in-one)
 
 ; Up to this point, the demo has been relatively straight-forward. At
 ; this point, though, the confusion begins. In the above, how does one
@@ -313,23 +316,31 @@
 ; The pause is performed by comparing terminal input to a given string.
 ; This is perhaps a bit uglier and more complicated than it could be:
 ; Executing term-loc returns (TerminalStream (Item "whatever was typed\n"))
-; and not just the item. The CollectionOf replaces the TerminalStream
+; and not just the item. The LinkSignature creates the Value
+; (LinkValue (Item "xxx\n")). The equality check proceeds, because
+; the TerminalStream is a kind of LinkValue, and so then the Items
+; are compared for equality. Try the below a few times.
 ;
 (cog-evaluate!
-	(Equal (CollectionOf term-loc) (Set (Item "xxx\n"))))
+	(Equal term-loc (LinkSignature (Type 'LinkValue) (Item "xxx\n"))))
 
-; Define a interactive loop.
+; Define an interactive loop.
 (Define
 	(DefinedPredicate "Interactive loop")
 	(SequentialAnd
 		(True (Filter report-dirs looper-loc))
 		(True (Write term-loc (Node "------------------------\n")))
 		(True (Write term-loc (Node "Hit enter to continue, anything else to halt\n")))
-		(Equal (CollectionOf term-loc) (Set (Item "\n")))
+		(Equal term-loc (LinkSignature (Type 'LinkValue) (Item "\n")))
 		(True looper)
 		(DefinedPredicate "Interactive loop")
 	))
 
+; Try it.
+(cog-execute! (DefinedPredicate "Interactive loop"))
+
+; Reset, perhaps, as desired.
+(cog-execute! (set-initial-root (Sensory "file:///etc")))
 
 ;------------------------------------------------------------------
 ;------------------------------------------------------------------
