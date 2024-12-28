@@ -243,12 +243,12 @@
 ; the looper step, and then returns true, so that the SequentialAnd
 ; sequences to the next step.
 (Define
-   (DefinedPredicate "My tail-recursive loop")
-   (SequentialAnd
-      (DefinedPredicate "keep going?")
+	(DefinedPredicate "My tail-recursive loop")
+	(SequentialAnd
+		(DefinedPredicate "keep going?")
 		(True looper)
-      (DefinedPredicate "My tail-recursive loop")
-   ))
+		(DefinedPredicate "My tail-recursive loop")
+	))
 
 ; Run it. This is unexciting: it sits there a while, and then stops.
 ; to prove that something happened, we can either insert a print
@@ -272,7 +272,7 @@
 (define term-loc (ValueOf (Anchor "crawler") (Predicate "term")))
 (cog-execute!
 	(SetValue (Anchor "crawler") (Predicate "term")
-   (Open (Type 'TerminalStream))))
+	(Open (Type 'TerminalStream))))
 
 ; Define a rule that outputs files to the xterm stream.
 (define report-dirs
@@ -292,13 +292,14 @@
 ; Create a loop that reports on any files located at the looper-loc
 ; before taking the next loop-step.
 (Define
-   (DefinedPredicate "Reporting loop")
-   (SequentialAnd
+	(DefinedPredicate "Reporting loop")
+	(SequentialAnd
 		(True (Filter report-dirs looper-loc))
-      (DefinedPredicate "keep going?")
+		(True (Write term-loc (Node "------------------------\n")))
+		(DefinedPredicate "keep going?")
 		(True looper)
-      (DefinedPredicate "Reporting loop")
-   ))
+		(DefinedPredicate "Reporting loop")
+	))
 
 ;------------------------------------------------------------------
 ;------------------------------------------------------------------
