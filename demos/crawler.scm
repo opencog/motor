@@ -262,6 +262,45 @@
 (cog-extract-recursive! (DefinedPredicate "My tail-recursive loop"))
 
 ;------------------------------------------------------------------
+; Print the filenames by piping them to an xterm. An xterm is used
+; because it provides a simple example of an I/O stream. Review the
+; examples/sensory/xterm-io.scm example as needed, and make sure that
+; xterm is installed (apt install xterm).
+
+; The setup here follows much as above. Define a location where the
+; terminal stream can be found, and then place an open stream there.
+(define term-loc (ValueOf (Anchor "crawler") (Predicate "term")))
+(cog-execute!
+	(SetValue (Anchor "crawler") (Predicate "term")
+   (Open (Type 'TerminalStream))))
+
+; Define a rule that outputs files to the xterm stream.
+(define report-dirs
+	(Rule
+		(Variable "$string-url")
+
+		; Accept only regular files
+		(LinkSignature (Type 'LinkValue)
+			(Variable "$string-url")
+			(StringOf (Type 'StringValue) (Node "reg")))
+
+		; Write them to the terminal
+		(Write term-loc (LinkSignature (Type 'LinkValue)
+			(Node "Found a file: ")
+			(Variable "$string-url") (Node "\n")))))
+
+; Create a loop that reports on any files located at the looper-loc
+; before taking the next loop-step.
+(Define
+   (DefinedPredicate "Reporting loop")
+   (SequentialAnd
+		(True (Filter report-dirs looper-loc))
+      (DefinedPredicate "keep going?")
+		(True looper)
+      (DefinedPredicate "Reporting loop")
+   ))
+
+;------------------------------------------------------------------
 ;------------------------------------------------------------------
 
 ; The files are now searchable as conventional atoms.
