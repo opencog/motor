@@ -224,6 +224,45 @@
 (cog-execute! (set-initial-root (Sensory "file:///tmp")))
 
 ;------------------------------------------------------------------
+; To be truly recursive, the single-step execution needs to be placed in
+; a loop. Atomese does not define any kind of "loop until done" Atom.
+; Perhaps it should? However, a tail recursive loop can be written in
+; stock Atomese. This is shown here.
+
+; First, define a predicate that will halt the tail-recursion.
+; Recall looper-loc is defined above: its where the current directory
+; listing is held. The `SizeOf` atom merely looks at its current size.
+(Define (DefinedPredicate "keep going?")
+	(GreaterThan (SizeOf looper-loc) (Number 0)))
+
+; Try it. Recall (stv 0 1) is false, and (stv 1 1) is true.
+(cog-evaluate! (DefinedPredicate "keep going?"))
+
+; Define a tail-recursive loop.
+; The only "tricky part" is the `(True looper)` clause. This executes
+; the looper step, and then returns true, so that the SequentialAnd
+; sequences to the next step.
+(Define
+   (DefinedPredicate "My tail-recursive loop")
+   (SequentialAnd
+      (DefinedPredicate "keep going?")
+		(True looper)
+      (DefinedPredicate "My tail-recursive loop")
+   ))
+
+; Run it. This is unexciting: it sits there a while, and then stops.
+; to prove that something happened, we can either insert a print
+; statement into the loop, or create some side effects, such as dumping
+; the directory listing into AtomSpace. This is done next.
+(cog-evaluate! (DefinedPredicate "My tail-recursive loop"))
+
+; BTW: if you plan to change the DefinedPredicate, you have to delete it
+; first. This is because `DefineLink` does not allow multiple
+; definitions. Deleting means extracting from the AtomSpace, like so:
+(cog-extract-recursive! (DefinedPredicate "My tail-recursive loop"))
+
+;------------------------------------------------------------------
+;------------------------------------------------------------------
 
 ; The files are now searchable as conventional atoms.
 (define query
