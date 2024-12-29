@@ -355,7 +355,6 @@
 	(Equal term-loc (LinkSignature (Type 'LinkValue)
 		(StringOf (Type 'StringValue) (Item "xxx\n")))))
 
-
 ; Define an interactive loop.
 (Define
 	(DefinedPredicate "Interactive loop")
@@ -370,17 +369,15 @@
 		(True (Write term-loc (Node "Hit enter to continue, anything else to exit\n")))
 
 		; Keep going if user hit enter.
-		(Equal term-loc (LinkSignature (Type 'LinkValue) (Item "\n")))
+		(StreamEqual term-loc (Item "\n"))
 
 		(True looper)
 		(DefinedPredicate "Interactive loop")
 	))
 
-; Try it.
-(cog-execute! (DefinedPredicate "Interactive loop"))
-
-; Reset, perhaps, as desired.
+; Try it. Reset the root, to get a clean start.
 (cog-execute! (set-initial-root (Sensory "file:///etc")))
+(cog-execute! (DefinedPredicate "Interactive loop"))
 
 ;------------------------------------------------------------------
 ;------------------------------------------------------------------
