@@ -330,15 +330,31 @@
 ; this is used to pause the recursion.
 
 ; The pause is performed by comparing terminal input to a given string.
-; This is perhaps a bit uglier and more complicated than it could be:
-; Executing term-loc returns (TerminalStream (Item "whatever was typed\n"))
-; and not just the item. The LinkSignature creates the Value
-; (LinkValue (Item "xxx\n")). The equality check proceeds, because
-; the TerminalStream is a kind of LinkValue, and so then the Items
-; are compared for equality. Try the below a few times.
+; The easiest way to do this is to use `StreamEqual` to compare the
+; first item in a stream to a string. `StreamEqual` papers over some
+; rough spots in usability to make stream compares a little simpler.
+(cog-evaluate! (StreamEqual term-loc (Item "xxx\n")))
+
+; There is also a more precise but more complicated way of getting the
+; terminal stream input, and comparing it to a value. It works like so.
+; Executing `term-loc` returns
+;     (TerminalStream (StringValue "whatever was typed\n"))
+; and not just the StringValue itself. To compare to that, we must
+; construct two Atoms that encode Values. First, the
+;     (StringOf (Type 'StringValue) (Item "xxx\n"))
+; is used to convert (Item "xxx\n") to (StringValue "xxx\n") and then
+; the LinkSignature wraps it up, creating the Value
+;     (LinkValue (StringValue "xxx\n"))
+; The equality check proceeds, because the TerminalStream is a kind of
+; LinkValue, and so then the StringValues are compared for equality.
+;
+; And now you understand why StreamEqual is better than Equal for this
+; particular demo. Try the below a few times.
 ;
 (cog-evaluate!
-	(Equal term-loc (LinkSignature (Type 'LinkValue) (Item "xxx\n"))))
+	(Equal term-loc (LinkSignature (Type 'LinkValue)
+		(StringOf (Type 'StringValue) (Item "xxx\n")))))
+
 
 ; Define an interactive loop.
 (Define
