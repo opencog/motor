@@ -5,7 +5,6 @@
 ; `examples/pattern-matcher/filter-value.scm`
 ; `examples/pattern-matcher/filter-strings.scm`
 ;
-(use-modules (srfi srfi-1))
 (use-modules (opencog) (opencog exec) (opencog sensory))
 
 ;------------------------------------------------------------------
@@ -29,6 +28,11 @@
 ; A file-system observer. Executing this will open the stream.
 (define fstream-observer
 	(Open (Type 'FileSysStream) focus-loc))
+
+; Try it. Although just opening the stream is pretty boring.
+; It will be an empty open stream, with no data on it, waiting
+; for commands.
+(cog-execute! fstream-observer)
 
 ;------------------------------------------------------------------
 ; The (Item "special") on the FileSys stream marks the files in the
@@ -124,6 +128,9 @@
 
 (define dir-filter2
 	(Filter open-rule dir-filter))
+
+; Try it
+(cog-execute! dir-filter2)
 
 ;------------------------------------------------------------------
 ; Get all directories in a directory.
@@ -223,7 +230,9 @@
 ; explored.
 (cog-execute! looper)
 
-; Reset the root, as desired.
+; Reset the root, as desired. Since each exploration goes one step
+; deeper, eventually you run out of subdirectories, and so resetting
+; the base is needed, if you want to continue playing with the demo.
 (cog-execute! (set-initial-root (Sensory "file:///tmp")))
 
 ;------------------------------------------------------------------
@@ -306,6 +315,13 @@
 
 ; Run it.
 (cog-evaluate! (DefinedPredicate "Reporting loop"))
+
+; If nothing happened, you want to reset to the base directory,
+; and try again:
+(cog-execute! (set-initial-root (Sensory "file:///etc")))
+(cog-evaluate! (DefinedPredicate "Reporting loop"))
+
+; Listing /usr is fun too, if you like looking at terminal spew.
 
 ;------------------------------------------------------------------
 ; The below demonstrates interactive I/O with the xterm. In this case,
