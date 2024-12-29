@@ -330,8 +330,16 @@
 	(SequentialAnd
 		(True (Filter report-files looper-loc))
 		(True (Write term-loc (Node "------------------------\n")))
-		(True (Write term-loc (Node "Hit enter to continue, anything else to halt\n")))
+
+		; Quit the loop, if there aren't any more subdirectories.
+		(DefinedPredicate "keep going?")
+
+		; Ask user what to do.
+		(True (Write term-loc (Node "Hit enter to continue, anything else to exit\n")))
+
+		; Keep going if user hit enter.
 		(Equal term-loc (LinkSignature (Type 'LinkValue) (Item "\n")))
+
 		(True looper)
 		(DefinedPredicate "Interactive loop")
 	))
