@@ -407,6 +407,7 @@
 ; wiring. This gives a hint that automatic wiring has a pretty large
 ; complexity hurdle in front of it.
 
+; A location where terminal input will be held.
 (define input-loc
 	(ValueOf (Anchor "crawler") (Predicate "in-words")))
 

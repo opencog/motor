@@ -5,6 +5,11 @@
 ; most of the commentary and explanation removed. It's much shorter,
 ; which perhaps makes it easier to understand.
 ;
+; The easiest way of running this demo is to say
+;    guile -l crawler-interactive.scm
+; This will drop you into the guile REPL with this file already loaded.
+; Then go to the bottom of this file, and start the looper, as shown.
+;
 (use-modules (opencog) (opencog exec) (opencog sensory))
 
 ; Define the basic recursive directory explorer.
@@ -75,15 +80,11 @@
 			(Variable "$string-url") (Node "\n")))))
 
 ;----------------------------------------------------
-; Define 
+; Specify a location where terminal input will be held.
 (define input-loc
 	(ValueOf (Anchor "crawler") (Predicate "in-words")))
 
-(cog-execute!
-	(SetValue (Anchor "crawler") (Predicate "in-words")
-		(Split term-loc)))
-
-; Define a interactive loop.
+; Define a large, complex interactive loop.
 (Define
 	(DefinedPredicate "Interactive shell")
 	(SequentialAnd
@@ -115,24 +116,10 @@
 		(DefinedPredicate "Interactive shell")
 	))
 
+; Set the initial location for the looper.
 (cog-execute! (set-initial-root (Sensory "file:///etc")))
+
+; Run the interactive shell.
 ; (cog-evaluate! (DefinedPredicate "Interactive shell"))
 
-; (cog-execute! (True (Write term-loc (ElementOf (Number 1) input-loc))))
-
-
-;;
-;;(use-modules (opencog) (opencog exec) (opencog sensory))
-;;(define input-loc
-;;	(ValueOf (Anchor "crawler") (Predicate "in-words")))
-;;(cog-set-value! (Anchor "crawler") (Predicate "in-words")
-;;	(LinkValue (StringValue "cd") (StringValue "/foo/bar")))
-;;
-;;(cog-evaluate!
-;;	(StreamEqual input-loc (Link (Item "cd") (Type 'StringValue))))
-;;
-;;(cog-evaluate!
-;;	(StreamEqual input-loc (Link (Item "cd") (Item "/foo/bar"))))
-;;
-;;(cog-execute! input-loc)
 ;;;------------------------------------------------------------------
