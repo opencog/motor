@@ -394,6 +394,18 @@
 ;         The splitting is along whitespace.
 ;    `ElementOfLink` which picks the n'th element out of a list.
 ;         This is needed to get the argument to the cd command.
+;
+; Notes:
+; Error conditions are not checked, so typiing in `cd` with an invalid
+; file URL will throw an exception that is not caught. The sensory
+; system does not currently have an exception-handling architecture.
+;
+; This demo should drive home just how stunningly complicated unix
+; shells are. It was a lot of work to wire this demo; anything more
+; cannot be managed wit this approach. But again, the goal here is
+; to explore general control, and, in the sensory project, automatic
+; wiring. This gives a hint that automatic wiring has a pretty large
+; complexity hurdle in front of it.
 
 (define input-loc
 	(ValueOf (Anchor "crawler") (Predicate "in-words")))
