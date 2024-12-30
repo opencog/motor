@@ -179,7 +179,7 @@ TBD. Explain this.
 
 Status
 ------
-* '''Version 0.0.3''' - Basic design is being developed. A basic
+* '''Version 0.0.4''' - Basic design is being developed. A basic
   demo mostly works, kind-of.
 
 HOWTO
