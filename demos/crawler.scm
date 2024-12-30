@@ -380,6 +380,58 @@
 (cog-execute! (DefinedPredicate "Interactive loop"))
 
 ;------------------------------------------------------------------
+; An interactive crawler demo. This reads from the terminal, and
+; branches in one of three ways: If the input is a newline, then
+; a file listing is printed. If the input is of the form
+; `cd file:///some/place` then traversal resumes at that location.
+; Anything else exits the crawler loop.
+;
+; The loop is now pretty complicated, as can be seen below.
+; Three new link types are used here:
+;    `CondLink` which implements conventional scheme-like
+;         if-then-else chains.
+;    `SplitLink` which splits the input string into words.
+;         The splitting is along whitespace.
+;    `ElementOfLink` which picks the n'th element out of a list.
+;         This is needed to get the argument to the cd command.
+
+(define input-loc
+	(ValueOf (Anchor "crawler") (Predicate "in-words")))
+
+; Define a interactive loop.
+(Define
+	(DefinedPredicate "Interactive shell")
+	(SequentialAnd
+		(True (Filter report-files looper-loc))
+		(True (Write term-loc (Node "------------------------\n")))
+		(True (Write term-loc (Node
+			"Usage:\n\tHit eenter to continue\n\tcd file:///some/dir to change directory\n\tAnything else to exit loop\n")))
+
+		; Tokenize the input. Place it at a fixed location.
+		(True (SetValue (Anchor "crawler") (Predicate "in-words")
+				(Split term-loc)))
+		(Cond
+			(StreamEqual input-loc (Link))
+			(True (Write term-loc (Node "You hit enter\n")))
+			(StreamEqual input-loc (Link (Item "cd") (Type 'StringValue)))
+			(True
+				(Write term-loc (Node "Going to change dir to "))
+				(Write term-loc (ElementOf (Number 1) input-loc))
+				(Write term-loc (Node "\n"))
+				(SetValue (Anchor "crawler") (Predicate "looper")
+					(Write
+						(Open (Type 'FileSysStream)
+							(ElementOf (Number 1) input-loc))
+						(List (Item "special")
+							(ElementOf (Number 1) input-loc))))
+			)
+			(False (Write term-loc (Node "Goodbye!\n"))))
+		(True looper)
+		(DefinedPredicate "Interactive shell")
+	))
+
+(cog-execute! (set-initial-root (Sensory "file:///etc")))
+(cog-evaluate! (DefinedPredicate "Interactive shell"))
 ;------------------------------------------------------------------
 
 ; The files are now searchable as conventional atoms.
